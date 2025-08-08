@@ -1,0 +1,505 @@
+<?php
+session_start();
+
+// Check if user is logged in and session variables exist
+$isLoggedIn = isset($_SESSION['user_id']);
+$username = '';
+if ($isLoggedIn) {
+    $username = $_SESSION['username'] ?? 'User'; // Provide default if username not set
+}
+include 'header.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features | Kurus+</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a8fe7;
+            --secondary-color: #44c767;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.4s ease, color 0.3s ease;
+        }
+        
+        /* Features Hero Section */
+        .features-hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            margin-bottom: 50px;
+            transition: all 0.4s ease;
+        }
+
+        .features-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .features-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            color: var(--dark-color);
+            margin-bottom: 50px;
+            font-size: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .feature-card h3 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            transition: color 0.3s ease;
+        }
+
+        .feature-card .card-footer {
+            margin-top: auto;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 20px;
+            margin-top: 50px;
+            transition: background-color 0.4s ease;
+        }
+
+        .testimonial-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-container h2 {
+            text-align: center;
+            color: var(--dark-color);
+            margin-bottom: 50px;
+            font-size: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card .quote {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #666;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+
+        .testimonial-card .author {
+            font-weight: bold;
+            color: var(--secondary-color);
+            transition: color 0.3s ease;
+        }
+
+        /* Call to Action */
+        .cta {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transition: background 0.4s ease;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-size: 1.2rem;
+        }
+
+        .cta .btn {
+            background: white;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            padding: 12px 30px;
+        }
+
+        .cta .btn:hover {
+            background: var(--dark-color);
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: auto;
+            transition: background-color 0.4s ease;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .social-icons {
+            margin-bottom: 20px;
+        }
+
+        .social-icons a {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Dark mode styles */
+        .dark-mode {
+            background: #222;
+            color: #eee;
+        }
+
+        .dark-mode .footer {
+            background-color: #1a252f;
+        }
+
+        .dark-mode .features-hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .dark-mode .feature-card,
+        .dark-mode .testimonial-card {
+            background-color: #333;
+            color: #eee;
+        }
+
+        .dark-mode .feature-card:hover,
+        .dark-mode .testimonial-card:hover {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .dark-mode .feature-card p,
+        .dark-mode .testimonial-card .quote {
+            color: #ddd;
+        }
+
+        .dark-mode .feature-card h3,
+        .dark-mode .testimonial-container h2,
+        .dark-mode .features h2 {
+            color: #f5f5f5;
+        }
+
+        .dark-mode .btn-outline {
+            border-color: var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .dark-mode .btn-outline:hover {
+            background: var(--secondary-color);
+            color: var(--dark-color);
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feature-card, .testimonial-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .btn {
+            background: var(--secondary-color);
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #3aa856;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+            padding: 6px 12px;
+            margin-top: 15px;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline:hover {
+            background: var(--secondary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <!-- Features Hero Section -->
+        <section class="features-hero">
+            <h1>Powerful Features to Transform Your Fitness</h1>
+            <p>Discover all the tools you need to track your workouts, manage your nutrition, and achieve your health goals</p>
+            <?php if($isLoggedIn): ?>
+                <a href="feature.php" class="btn">Go to Dashboard</a>
+            <?php else: ?>
+                <a href="register.php" class="btn">Get Started for Free</a>
+            <?php endif; ?>
+        </section>
+
+        <!-- Fitness Features Section -->
+        <section class="features">
+            <h2>Fitness Management</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-dumbbell"></i>
+                    <h3>Workout Tracking</h3>
+                    <p>Log your exercises, track sets and reps, and monitor your progress over time with detailed analytics. See your strength gains and endurance improvements.</p>
+                    <div class="card-footer">
+                        <a href="fitness_management.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Progress Analytics</h3>
+                    <p>Visualize your fitness journey with interactive charts and personalized progress reports. Track measurements, body fat percentage, and performance metrics.</p>
+                    <div class="card-footer">
+                        <a href="fitness_management.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Workout Planner</h3>
+                    <p>Create custom workout routines and schedules tailored to your fitness level and goals. Save your favorite workouts and build programs.</p>
+                    <div class="card-footer">
+                        <a href="fitness_management.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-trophy"></i>
+                    <h3>Goal Setting</h3>
+                    <p>Set achievable fitness goals and get personalized recommendations to help you reach them. Celebrate milestones and stay motivated.</p>
+                    <div class="card-footer">
+                        <a href="fitness_management.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community Support</h3>
+                    <p>Connect with other fitness enthusiasts, share achievements, and get motivation. Join challenges and groups with similar interests.</p>
+                    <div class="card-footer">
+                        <a href="fitness_management.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-running"></i>
+                    <h3>Exercise Library</h3>
+                    <p>Access hundreds of exercises with instructions and videos to perfect your form. Filter by muscle group, equipment, or difficulty level.</p>
+                    <div class="card-footer">
+                        <a href="fitness_management.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nutrition Features Section -->
+        <section class="features">
+            <h2>Diet & Nutrition</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Meal Tracking</h3>
+                    <p>Log your daily meals and snacks with our comprehensive food database. Scan barcodes or use voice input for quick tracking.</p>
+                    <div class="card-footer">
+                        <a href="diet_plan.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-apple-alt"></i>
+                    <h3>Macro Tracking</h3>
+                    <p>Monitor your protein, carbs, and fat intake to optimize your nutrition. Set macro goals based on your dietary preferences.</p>
+                    <div class="card-footer">
+                        <a href="diet_plan.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-book"></i>
+                    <h3>Meal Plans</h3>
+                    <p>Access personalized meal plans based on your dietary preferences and goals. Get recipes and shopping lists for each plan.</p>
+                    <div class="card-footer">
+                        <a href="diet_plan.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-calculator"></i>
+                    <h3>Calorie Calculator</h3>
+                    <p>Determine your daily calorie needs based on your activity level and goals. Adjust as you progress for continued results.</p>
+                    <div class="card-footer">
+                        <a href="diet_plan.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-glass-whiskey"></i>
+                    <h3>Hydration Tracker</h3>
+                    <p>Monitor your daily water intake and get reminders to stay hydrated. Track other beverages and their nutritional impact.</p>
+                    <div class="card-footer">
+                        <a href="diet_plan.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-notes-medical"></i>
+                    <h3>Nutrition Insights</h3>
+                    <p>Get personalized recommendations to improve your eating habits. Identify nutritional gaps and get food suggestions.</p>
+                    <div class="card-footer">
+                        <a href="diet_plan.php" class="btn-outline">Learn More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <div class="testimonial-container">
+                <h2>What Our Users Say</h2>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <p class="quote">"The workout tracking features helped me stay consistent and see real progress for the first time in years. I've gained 15 pounds of muscle in 6 months!"</p>
+                        <p class="author">- James Wilson, Fitness Enthusiast</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="quote">"I love the nutrition tracking - it's so easy to use and has completely changed how I think about food. I've lost 30 pounds and kept it off for over a year."</p>
+                        <p class="author">- Emily Rodriguez, Nutrition Client</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="quote">"As a personal trainer, I recommend Kurus+ to all my clients. The analytics are incredibly detailed and help us make data-driven decisions about their programs."</p>
+                        <p class="author">- David Kim, Certified Personal Trainer</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta">
+            <h2>Ready to Transform Your Fitness?</h2>
+            <p>Join thousands of users who are achieving their fitness goals with Kurus+</p>
+            <?php if($isLoggedIn): ?>
+                <a href="fitness_management.php" class="btn">Continue Your Journey</a>
+            <?php else: ?>
+                <a href="login.php" class="btn">Start Your Free Trial</a>
+            <?php endif; ?>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© <?php echo date('Y'); ?> Kurus+ Your Fitness Management System. All rights reserved.</p>
+    </footer>
+
+    <script>
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        
+    });
+    </script>
+</body>
+</html>
