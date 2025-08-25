@@ -7,6 +7,7 @@ if ($isLoggedIn) {
     $username = $_SESSION['username'] ?? 'User'; // Provide default if username not set
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,14 +1,21 @@
-<!DOCTYPE html>
 <?php
 session_start();
-// Check if user is logged in and session variables exist
-$isLoggedIn = isset($_SESSION['user_id']);
-$username = '';
-if ($isLoggedIn) {
-    $username = $_SESSION['username'] ?? 'User'; // Provide default if username not set
+include 'db.php';
+
+// Redirect if not logged in as user
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
 }
+
+// Define login state
+$isLoggedIn = true;
+$username = $_SESSION['username'] ?? 'User';
+
 include 'header.php';
 ?>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,7 +42,6 @@ include 'header.php';
             flex-direction: column;
         }
 
-        /* Hero Section */
         .hero {
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('1.jpg');
             background-size: cover;
@@ -58,7 +64,6 @@ include 'header.php';
             margin: 0 auto 30px;
         }
 
-        /* Features Section */
         .features {
             padding: 50px 20px;
             max-width: 1200px;
@@ -102,7 +107,6 @@ include 'header.php';
             margin-bottom: 15px;
         }
 
-        /* Testimonials */
         .testimonials {
             padding: 80px 20px;
             margin-top: 50px;
@@ -143,7 +147,6 @@ include 'header.php';
             color: var(--secondary-color);
         }
 
-        /* Call to Action */
         .cta {
             text-align: center;
             padding: 80px 20px;
@@ -174,7 +177,6 @@ include 'header.php';
             color: white;
         }
 
-        /* Footer */
         .footer {
             background-color: var(--dark-color);
             color: white;
@@ -215,48 +217,6 @@ include 'header.php';
             color: var(--secondary-color);
         }
 
-        /* Dark mode styles */
-        .dark-mode {
-            background: #222;
-            color: white;
-        }
-
-        .dark-mode .card,
-        .dark-mode .feature-card,
-        .dark-mode .testimonial-card {
-            background-color: #333;
-            color: white;
-        }
-
-        .dark-mode h1,
-        .dark-mode h2,
-        .dark-mode h3 {
-            color: var(--light-color);
-        }
-
-        .dark-mode .navbar,
-        .dark-mode .footer {
-            background-color: #1a252f;
-        }
-
-        .dark-mode .profile-dropdown {
-            background-color: #333;
-            border: 1px solid #444;
-        }
-
-        .dark-mode .profile-dropdown a {
-            color: white;
-        }
-
-        .dark-mode .profile-dropdown a:hover {
-            background-color: #444;
-        }
-
-        .dark-mode .divider {
-            border-color: #444;
-        }
-
-        /* Animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -266,7 +226,6 @@ include 'header.php';
             animation: fadeIn 0.5s ease-out;
         }
 
-        /* Button styles */
         .btn {
             background: var(--secondary-color);
             padding: 8px 15px;
@@ -287,7 +246,6 @@ include 'header.php';
 </head>
 <body>
     <main>
-        <!-- Hero Section -->
         <section class="hero">
             <h1>Transform Your Fitness Journey</h1>
             <p>Track your workouts, monitor your nutrition, and achieve your fitness goals with our comprehensive management system</p>
@@ -298,7 +256,6 @@ include 'header.php';
             <?php endif; ?>
         </section>
 
-        <!-- Features Section -->
         <section class="features">
             <h2>Why Choose Kurus+?</h2>
             <div class="feature-grid">
@@ -335,7 +292,6 @@ include 'header.php';
             </div>
         </section>
 
-        <!-- Testimonials -->
         <section class="testimonials">
             <div class="testimonial-container">
                 <h2>What Our Users Say</h2>
@@ -356,7 +312,6 @@ include 'header.php';
             </div>
         </section>
 
-        <!-- Call to Action -->
         <section class="cta">
             <h2>Ready to Transform Your Fitness?</h2>
             <p>Join thousands of users who are achieving their fitness goals with Kurus+</p>
@@ -371,7 +326,5 @@ include 'header.php';
     <footer class="footer">
         <p>© 2025 Kurus+ Your Fitness Management System. All rights reserved.</p>
     </footer>
-
-
 </body>
 </html>

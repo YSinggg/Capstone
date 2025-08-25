@@ -13,73 +13,86 @@ if ($connection === false) {
 
 $successMessage = "";
 $errorMessage = "";
-$activeForm = "register"; // Default to registration form
+$activeForm = "login"; // Default to login form
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {  
     $email = mysqli_real_escape_string($connection, $_POST['email']);
-    $password = $_POST['password']; // Don't escape password before hashing
+    $password = $_POST['password']; // raw password input
 
-    $query = "SELECT * FROM users WHERE email='$email'";
-    $result = mysqli_query($connection, $query);
+    // 1. Check admin table
+    $adminQuery = "SELECT * FROM admin WHERE email='$email' LIMIT 1";
+    $adminResult = mysqli_query($connection, $adminQuery);
+
+    if ($adminResult && mysqli_num_rows($adminResult) == 1) {
+        $admin = mysqli_fetch_assoc($adminResult);
+
+        if (password_verify($password, $admin['password']) || $password === $admin['password']) {
+            // If hashed or plain password matches
+            $_SESSION['admin_id'] = $admin['admin_id'];
+            $_SESSION['email'] = $admin['email'];
+            $_SESSION['username'] = "Administrator";
+
+            header("Location: admin_dashboard.php");
+            exit();
+        }
+    }
+
+    // 2. Check users table
+    $userQuery = "SELECT * FROM users WHERE email='$email' LIMIT 1";
+    $userResult = mysqli_query($connection, $userQuery);
     
-    if (mysqli_num_rows($result) == 1) {
-        $row = mysqli_fetch_assoc($result);
+    if ($userResult && mysqli_num_rows($userResult) == 1) {
+        $user = mysqli_fetch_assoc($userResult);
         
-        // Verify password against hash
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['email'] = $email; 
-            $_SESSION['fullname'] = $row['fullname'];
-            
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['email'] = $user['email']; 
+            $_SESSION['fullname'] = $user['fullname'];
+            $_SESSION['username'] = $row['fullname'];
+
             // Store fitness data in session
-            $_SESSION['height'] = $row['height'];
-            $_SESSION['weight'] = $row['weight'];
-            $_SESSION['fitness_goal'] = $row['fitness_goal'];
-            
+            $_SESSION['height'] = $user['height'];
+            $_SESSION['weight'] = $user['weight'];
+            $_SESSION['fitness_goal'] = $user['fitness_goal'];
+
             header("Location: userhome.php");
             exit();
-        } else {
-            $errorMessage = "Invalid email or password.";
         }
-    } else {
-        $errorMessage = "No account found with that email.";
     }
-} 
+
+    // If no match
+    $errorMessage = "Invalid email or password.";
+}
+
+// ✅ Registration logic (kept same as your original)
 elseif (isset($_POST['register'])) {  
     $activeForm = "register";
 
-    // Validate required fields
     $required = ['fullname', 'email', 'password', 'age', 'gender', 'height', 'weight'];
     $missing = array_diff($required, array_keys($_POST));
     
     if (!empty($missing)) {
         $errorMessage = "Missing required fields: " . implode(', ', $missing);
-    } 
-    elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $errorMessage = "Invalid email format";
-    }
-    elseif (strlen($_POST['password']) < 8) {
+    } elseif (strlen($_POST['password']) < 8) {
         $errorMessage = "Password must be at least 8 characters";
-    }
-    else {
-        // Escape all inputs
+    } else {
         $fullname = mysqli_real_escape_string($connection, $_POST['fullname']);
         $email = mysqli_real_escape_string($connection, $_POST['email']);
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash password
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $age = (int)$_POST['age'];
         $gender = mysqli_real_escape_string($connection, $_POST['gender']);
         $height = (float)$_POST['height'];
         $weight = (float)$_POST['weight'];
         $fitness_goal = mysqli_real_escape_string($connection, $_POST['fitness_goal']);
 
-        // Check if email already exists
         $checkEmail = "SELECT id FROM users WHERE email='$email'";
         $emailResult = mysqli_query($connection, $checkEmail);
         
         if (mysqli_num_rows($emailResult) > 0) {
             $errorMessage = "Email already registered. Please login instead.";
         } else {
-            // Insert user with fitness data
             $query = "INSERT INTO users (fullname, email, password, age, gender, height, weight, fitness_goal) 
                       VALUES ('$fullname', '$email', '$password', $age, '$gender', $height, $weight, '$fitness_goal')";
                       
