@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 18, 2025 at 02:44 PM
+-- Generation Time: Aug 25, 2025 at 03:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,25 @@ SET time_zone = "+00:00";
 --
 -- Database: `fitness_management`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `admin_id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`admin_id`, `email`, `password`) VALUES
+(1, 'admin123@gmail.com', '$2y$10$EIc24cGtn5uyVkhV0tDXoecnLV4APy9PTpDP.kPUBg5SAfB.azeGC');
 
 -- --------------------------------------------------------
 
@@ -41,7 +60,8 @@ CREATE TABLE `comments` (
 
 INSERT INTO `comments` (`comment_id`, `post_id`, `user_id`, `content`, `created_at`) VALUES
 (1, 1, 1, 'csadsadsa', '2025-07-13 10:45:32'),
-(2, 2, 1, 'dasdas', '2025-07-15 12:32:54');
+(2, 2, 1, 'dasdas', '2025-07-15 12:32:54'),
+(7, 2, 3, '123', '2025-08-25 13:31:08');
 
 -- --------------------------------------------------------
 
@@ -63,7 +83,8 @@ CREATE TABLE `community_posts` (
 
 INSERT INTO `community_posts` (`post_id`, `user_id`, `content`, `likes`, `created_at`) VALUES
 (1, 1, 'fsdfdsf', 0, '2025-07-13 10:45:21'),
-(2, 1, 'dsda', 0, '2025-07-15 12:32:51');
+(2, 1, 'dsda', 1, '2025-07-15 12:32:51'),
+(5, 3, 'asdads', 1, '2025-08-25 13:17:56');
 
 -- --------------------------------------------------------
 
@@ -120,7 +141,15 @@ INSERT INTO `meals` (`id`, `user_id`, `meal_type`, `meal_name`, `meal_time`, `se
 (5, 1, 'breakfast', 'Sample Breakfast', '08:00:00', NULL, 425, 23.00, 48.00, 14.00, 'Plan: Quick & Easy Meals', '2025-07-13', '2025-07-13 11:42:48'),
 (6, 1, 'lunch', 'Sample Lunch', '12:30:00', NULL, 595, 32.00, 67.00, 19.00, 'Plan: Quick & Easy Meals', '2025-07-13', '2025-07-13 11:42:48'),
 (7, 1, 'dinner', 'Sample Dinner', '18:30:00', NULL, 510, 27.00, 57.00, 17.00, 'Plan: Quick & Easy Meals', '2025-07-13', '2025-07-13 11:42:48'),
-(8, 1, 'snack', 'Healthy Snack', '15:30:00', NULL, 170, 9.00, 19.00, 6.00, 'Plan: Quick & Easy Meals', '2025-07-13', '2025-07-13 11:42:48');
+(8, 1, 'snack', 'Healthy Snack', '15:30:00', NULL, 170, 9.00, 19.00, 6.00, 'Plan: Quick & Easy Meals', '2025-07-13', '2025-07-13 11:42:48'),
+(13, 2, 'breakfast', 'Sample Breakfast', '08:00:00', NULL, 450, 25.00, 50.00, 15.00, 'Plan: Basic Healthy Eating', '2025-07-28', '2025-07-27 18:25:44'),
+(14, 2, 'lunch', 'Sample Lunch', '12:30:00', NULL, 630, 35.00, 70.00, 21.00, 'Plan: Basic Healthy Eating', '2025-07-28', '2025-07-27 18:25:44'),
+(15, 2, 'dinner', 'Sample Dinner', '18:30:00', NULL, 540, 30.00, 60.00, 18.00, 'Plan: Basic Healthy Eating', '2025-07-28', '2025-07-27 18:25:44'),
+(16, 2, 'snack', 'Healthy Snack', '15:30:00', NULL, 180, 10.00, 20.00, 6.00, 'Plan: Basic Healthy Eating', '2025-07-28', '2025-07-27 18:25:44'),
+(17, 1, 'breakfast', 'Sample Breakfast', '08:00:00', NULL, 450, 25.00, 50.00, 15.00, 'Plan: Basic Healthy Eating', '2025-08-25', '2025-08-25 04:23:24'),
+(18, 1, 'lunch', 'Sample Lunch', '12:30:00', '', 530, 35.00, 70.00, 21.00, 'Plan: Basic Healthy Eating', '2025-08-25', '2025-08-25 04:23:24'),
+(19, 1, 'dinner', 'Sample Dinner', '18:30:00', NULL, 540, 30.00, 60.00, 18.00, 'Plan: Basic Healthy Eating', '2025-08-25', '2025-08-25 04:23:24'),
+(20, 1, 'snack', 'Healthy Snack', '15:30:00', NULL, 180, 10.00, 20.00, 6.00, 'Plan: Basic Healthy Eating', '2025-08-25', '2025-08-25 04:23:24');
 
 -- --------------------------------------------------------
 
@@ -187,7 +216,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `fullname`, `email`, `password`, `age`, `gender`, `height`, `weight`, `fitness_goal`, `created_at`, `updated_at`, `calorie_target`) VALUES
-(1, 'ongjipet', 'ongjipet123@gmail.com', '$2y$10$XMza2MkxCkj0CIxc5b1RkeZOXPrdLAICOx2MLJc2bXxbVEtvVdbuu', 22, 'male', 170.00, 60.00, '', '2025-07-13 10:36:44', '2025-07-13 11:42:48', 1700);
+(1, 'ongjipet', 'ongjipet123@gmail.com', '$2y$10$XMza2MkxCkj0CIxc5b1RkeZOXPrdLAICOx2MLJc2bXxbVEtvVdbuu', 22, 'male', 170.00, 60.00, '', '2025-07-13 10:36:44', '2025-08-25 04:23:24', 1800),
+(2, 'nobody', 'dllm@gmail.com', '$2y$10$Qd9zWhAyhyDKYh/o5Fgugez4YKKFRvNIvZhQvxrSDjnbYyXU2kOJ6', 22, 'female', 180.00, 65.00, 'weight_loss', '2025-07-24 18:28:57', '2025-08-25 13:01:19', 1700),
+(3, 'Admin', 'admin@system.local', '$2y$10$DzgiMyEI/nRp5yxdgCzh/.h/CZ/f6Lvk07MrjtycJgR4zwg1WUq3a', 0, 'other', 0.00, 0.00, '', '2025-08-25 13:17:56', '2025-08-25 13:17:56', 0);
 
 -- --------------------------------------------------------
 
@@ -232,7 +263,7 @@ CREATE TABLE `workouts` (
 --
 
 INSERT INTO `workouts` (`workout_id`, `user_id`, `workout_type`, `workout_date`, `duration_minutes`, `calories_burned`, `notes`, `created_at`) VALUES
-(1, 1, 'strength', '2025-07-13', 20, 120, 'lolo', '2025-07-13 10:44:39');
+(1, 1, 'strength', '2025-07-13', 20, 200, 'updated 25/8', '2025-07-13 10:44:39');
 
 -- --------------------------------------------------------
 
@@ -256,11 +287,20 @@ CREATE TABLE `workout_plans` (
 --
 
 INSERT INTO `workout_plans` (`plan_id`, `user_id`, `plan_date`, `morning_routine`, `evening_activity`, `is_completed`, `created_at`, `updated_at`) VALUES
-(1, 1, '2025-07-14', 'fdeqwedwq', 'dwqdqw', 1, '2025-07-14 07:19:14', '2025-07-14 07:20:20');
+(1, 1, '2025-07-14', 'fdeqwedwq', 'dwqdqw', 0, '2025-07-14 07:19:14', '2025-08-08 10:54:21'),
+(2, 2, '2025-07-31', '12345678', '1234567890', 1, '2025-07-31 10:31:58', '2025-08-02 11:09:44'),
+(3, 1, '2025-08-06', 'Drink', 'Workout', 0, '2025-08-06 20:16:27', '2025-08-07 20:27:44');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`admin_id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `comments`
@@ -332,16 +372,22 @@ ALTER TABLE `workout_plans`
 --
 
 --
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `community_posts`
 --
 ALTER TABLE `community_posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `goals`
@@ -353,7 +399,7 @@ ALTER TABLE `goals`
 -- AUTO_INCREMENT for table `meals`
 --
 ALTER TABLE `meals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `meal_plans`
@@ -365,7 +411,7 @@ ALTER TABLE `meal_plans`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `water_intake`
@@ -383,7 +429,7 @@ ALTER TABLE `workouts`
 -- AUTO_INCREMENT for table `workout_plans`
 --
 ALTER TABLE `workout_plans`
-  MODIFY `plan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `plan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

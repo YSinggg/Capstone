@@ -63,18 +63,18 @@ $current = basename($_SERVER['PHP_SELF']);
 <body>
 <header>
   <nav class="nav">
-    <div class="logo"><i class="fa-solid fa-dumbbell"></i> Kurus+ Admin</div>
+    <div class="logo"><i class="fas fa-dumbbell"></i> Kurus+ Admin</div>
     <div class="links">
       <a href="admin_dashboard.php" class="<?= $current==='admin_dashboard.php'?'active':'' ?>"><i class="fa-solid fa-gauge"></i>Dashboard</a>
-      <a href="admin_community.php" class="<?= $current==='admin_community.php'?'active':'' ?>"><i class="fa-solid fa-people-group"></i>Community</a>
       <a href="admin_users.php" class="<?= $current==='admin_users.php'?'active':'' ?>"><i class="fa-solid fa-user"></i>Users</a>
       <a href="admin_workouts.php" class="<?= $current==='admin_workouts.php'?'active':'' ?>"><i class="fa-solid fa-dumbbell"></i>Workouts</a>
       <a href="admin_nutrition.php" class="<?= $current==='admin_nutrition.php'?'active':'' ?>"><i class="fa-solid fa-utensils"></i>Nutrition</a>
+      <a href="admin_community.php" class="<?= $current==='admin_community.php'?'active':'' ?>"><i class="fa-solid fa-people-group"></i>Community</a>
       <a href="admin_settings.php" class="<?= $current==='admin_settings.php'?'active':'' ?>"><i class="fa-solid fa-gear"></i>Settings</a>
     </div>
     <div class="right">
       <button class="btn btn-outline" onclick="toggleDark()"><i class="fa-solid fa-circle-half-stroke"></i></button>
-      <a class="btn btn-blue" href="logout.php"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      <a class="btn btn-blue" href="admin_logout.php"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
   </nav>
 </header>
